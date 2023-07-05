@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basic HTML</title>
+</head>
+
+<body>
+    <h1>Basic HTML File</h1>
+
+    <script>
+        // Your JavaScript code goes here
+        const apiUrl = 'http://localhost:3100'; // Replace with your API URL
+
+        // Function to make a request to the server and retrieve the JWT token
+        async function getToken(username, email) {
+            const response = await fetch(`${apiUrl}/login`, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' },
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to retrieve token');
+            }
+
+            const data = await response.json();
+            return data.token;
+        }
+
+        // Function to make an authenticated API request
+        async function makeAuthenticatedRequest(endpoint, method = 'GET', body = {}, token) {
+            const headers = {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            };
+
+            const options = {
+                method,
+                headers,
+            };
+
+            try {
+                const response = await fetch(`${apiUrl}/${endpoint}`, options);
+                if (!response.ok) {
+                    throw new Error('Request failed');
+                }
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error(error);
+                // Handle error
+            }
+        }
+
+        // Example usage
+        const username = 'Shobha';
+        const email = 'shobha@gmail.com';
+
+        getToken(username, email)
+            .then(token => {
+                console.log('Token retrieved:', token);
+                // Proceed with making authenticated API requests
+                makeAuthenticatedRequest('profile', 'GET', null, token)
+                    .then(data => {
+                        // Handle response data
+                        console.log(data);
+                    })
+                    .catch(error => {
+                        // Handle error
+                        console.log(token);
+                        console.error(error);
+                    });
+            })
+            .catch(error => {
+                console.error(error);
+                // Handle error
+            });
+    </script>
+</body>
+
+</html>
