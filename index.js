@@ -40,7 +40,7 @@ app.get("/login", (req, res) => {
 });
 
 app.get("/profile", verifyToken, (req, res) => {
-    console.log('Response from Spirit Meaning ' +  req.ip);
+    console.log('Response from Spirit Meaning ');
     var authHeader= req.headers['authorization']
     const token= authHeader && authHeader.split(' ')[1];
     jwt.verify(token, secretKey, (err, decoded) => {
@@ -110,6 +110,6 @@ function verifyToken(req, res, next) {
 }
 
 app.listen(3100, () => {
-    console.log('Response from Spirit Meaning ' +  req.ip);
+    console.log('Response from Spirit Meaning ' );
     console.log("App is running on port: 3100");
 });
