@@ -4,9 +4,19 @@ const path = require('path');
 const port=process.env.port||3100;
 app.use(require('body-parser').json());
 
-app.post('/from', (req, res) => {
-  res.redirect(307, '/to');
-});
+async function postData() {
+    try {
+      const response = await axios.post('http://localhost:3100/from', {
+        message: 'Hello, World!'
+      });
+  
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  
+  postData();
 app.post('/to', (req, res) => res.send(req.body.message));
 const res = await axios.post('http://localhost:3100/from', {
   message: 'Hello, World!'
@@ -117,7 +127,7 @@ function verifyToken(req, res, next) {
         res.status(403).json({ result: 'Token is Invalid' });
     }
 }
-
+postData();
 app.listen(3100, () => {
     console.log('Response from Spirit Meaning ' );
     console.log("App is running on port: 3100");
