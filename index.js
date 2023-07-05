@@ -35,7 +35,7 @@ const secretKey = "secretkey";
 
 
 app.get("/login", (req, res) => {
-    console.log('Response from Spirit Meaning ' +  req.ip);
+    console.log('Response from Spirit Meaning ');
     const user = [
         {
             id: 1,
