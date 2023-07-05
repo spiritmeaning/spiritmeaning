@@ -6,7 +6,7 @@ app.use(require('body-parser').json());
 
 async function postData() {
     try {
-      const response = await axios.post('http://localhost:3100/from', {
+      const response = await axios.post('https://spiritmeaning.cyclic.app/from', {
         message: 'Hello, World!'
       });
   
