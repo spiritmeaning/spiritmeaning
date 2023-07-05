@@ -19,6 +19,7 @@ const secretKey = "secretkey";
 
 
 app.get("/login", (req, res) => {
+    console.log('Response from Spirit Meaning ' +  req.ip);
     const user = [
         {
             id: 1,
@@ -39,6 +40,7 @@ app.get("/login", (req, res) => {
 });
 
 app.get("/profile", verifyToken, (req, res) => {
+    console.log('Response from Spirit Meaning ' +  req.ip);
     var authHeader= req.headers['authorization']
     const token= authHeader && authHeader.split(' ')[1];
     jwt.verify(token, secretKey, (err, decoded) => {
@@ -108,5 +110,6 @@ function verifyToken(req, res, next) {
 }
 
 app.listen(3100, () => {
+    console.log('Response from Spirit Meaning ' +  req.ip);
     console.log("App is running on port: 3100");
 });
