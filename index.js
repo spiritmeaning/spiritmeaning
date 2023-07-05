@@ -1,4 +1,4 @@
-import axios from 'axios';
+const axios = require('axios');
 const express = require('express');
 const app = express();
 const path = require('path');
