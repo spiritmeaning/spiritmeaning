@@ -16,11 +16,7 @@ async function postData() {
     }
   }
   
-  postData();
-app.post('/to', (req, res) => res.send(req.body.message));
-const res = await axios.post('http://localhost:3100/from', {
-  message: 'Hello, World!'
-});
+
 
 // Serve the HTML file
 app.get('/', (req, res) => {
