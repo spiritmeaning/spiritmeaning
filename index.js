@@ -45,7 +45,7 @@ app.use(session({
 // Initialize CSRF middleware
 
 
-app.post('/checkCSRF', (req, res) => {
+app.get('/checkCSRF', (req, res) => {
     // Verify the CSRF token
     if (req.csrfToken() !== req.query._csrf) {
         return res.status(403).send('Invalid CSRF token');
