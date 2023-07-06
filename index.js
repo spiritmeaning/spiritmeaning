@@ -33,14 +33,11 @@ app.get("/login", (req, res) => {
     const user = [
         {
             id: 1,
-            username: "Rajesh",
-            email: "rajeshpara08@gmail.com",
-        },
-        {
-            id: 2,
-            username: "Shobha",
-            email: "shobha@gmail.com",
+            username: "Spirit Meaning",
+            email: "spiritmeaning@gmail.com",
+            password: "SriRamSita1234$#@!"
         }
+
     ];
     jwt.sign({ user }, secretKey, { expiresIn: '1000s' }, (err, token) => {
         res.json({
@@ -60,18 +57,26 @@ app.get("/profile", verifyToken, (req, res) => {
             res.status(403).json({ result: "Invalid Token" });
         } else {
             // Perform user verification here
-            const validUsers = [
-                { username: 'Rajesh', email: 'rajeshpara08@gmail.com' },
-                { username: 'Shobha', email: 'shobha@gmail.com' }
+            const firebaseCredentials = [
+                {
+                    apiKey: "AIzaSyDgOZOH3upRrphZP834oOLJuHpCY9wcrzE",
+                    authDomain: "spiritmeaning-email.firebaseapp.com",
+                    projectId: "spiritmeaning-email",
+                    storageBucket: "spiritmeaning-email.appspot.com",
+                    messagingSenderId: "274529228758",
+                    appId: "1:274529228758:web:d8b9d3646c2880de74f677",
+                    measurementId: "G-ZPGXSCFT60"
+                },
+
             ];
             const user = decoded.user;
 
 
-            console.log(validUsers[0].username);
-            const userName = validUsers[0].username
-            if (userName) {
+            console.log(firebaseCredentials[0].apiKey);
+            const firebaseProfile = firebaseCredentials[0].apiKey
+            if (firebaseProfile) {
                 res.json({
-                    message: "Profile Accessed",
+                    message: "Firebase Profile Accessed",
                     authData: user
                 });
             } else {
@@ -99,18 +104,26 @@ function verifyToken(req, res, next) {
                 const { username, email } = user;
 
                 // Perform user verification here
-                const validUsers = [
-                    { username: 'Rajesh', email: 'rajeshpara08@gmail.com' },
-                    { username: 'Shobha', email: 'shobha@gmail.com' }
+                const firebaseCredentials = [
+                    {
+                        apiKey: "AIzaSyDgOZOH3upRrphZP834oOLJuHpCY9wcrzE",
+                        authDomain: "spiritmeaning-email.firebaseapp.com",
+                        projectId: "spiritmeaning-email",
+                        storageBucket: "spiritmeaning-email.appspot.com",
+                        messagingSenderId: "274529228758",
+                        appId: "1:274529228758:web:d8b9d3646c2880de74f677",
+                        measurementId: "G-ZPGXSCFT60"
+                    },
+    
                 ];
 
-                console.log(validUsers[0].username);
-                const userName = validUsers[0].username
-                if (userName) {
+                console.log(firebaseCredentials[0].apiKey);
+                const firebaseProfile = firebaseCredentials[0].apiKey
+                if (firebaseProfile) {
                     // User is verified, proceed to the next middleware
                     next();
                 } else {
-                    res.status(403).json({ result: 'Invalid User' });
+                    res.status(403).json({ result: 'Invalid Firebase Profile' });
                 }
             }
         });
