@@ -9,7 +9,9 @@ const csurf = require('csurf');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 const cors = require('cors');
-
+app.use(cors({
+    origin: 'http://127.0.0.1:5500'
+}));
 // Set up session middleware
 const secretKey = "secretkey";
 
@@ -18,9 +20,7 @@ const secretKey = "secretkey";
 // Use the csrfProtection middleware before your routes
 
 
-app.use(cors({
-    origin: 'http://127.0.0.1:5500'
-}));
+
 // Set up CSRF middleware
 
 
