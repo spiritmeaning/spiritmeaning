@@ -102,7 +102,7 @@ function verifyToken(req, res, next) {
             } else {
                 const user = decoded.user[0]; // Access the first user object from decoded.user
            //     console.log(user);
-                const { username, email,password } = user;
+               
 
                 // Perform user verification here
                 const firebaseCredentials = [
@@ -117,7 +117,7 @@ function verifyToken(req, res, next) {
                     },
     
                 ];
-
+                const { username, email,password,fireBase } = user;
              //   console.log(firebaseCredentials[0].apiKey);
                 const firebaseProfile = firebaseCredentials[0].apiKey
                 if (firebaseProfile) {
