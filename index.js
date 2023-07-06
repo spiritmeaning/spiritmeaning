@@ -22,7 +22,7 @@ app.use(cors({
 
 
 // Serve the HTML file
-app.get('/', (req, res) => {
+app.post('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
@@ -45,7 +45,7 @@ app.use(session({
 // Initialize CSRF middleware
 
 
-app.get('/checkCSRF', (req, res) => {
+app.post('/checkCSRF', (req, res) => {
     // Verify the CSRF token
     if (req.csrfToken() !== req.query._csrf) {
         return res.status(403).send('Invalid CSRF token');
@@ -56,7 +56,7 @@ app.get('/checkCSRF', (req, res) => {
 });
 
 
-app.get("/login", (req, res) => {
+app.post("/login", (req, res) => {
     console.log('Response from Spirit Meaning ');
     const user = [
         {
@@ -77,7 +77,7 @@ app.get("/login", (req, res) => {
     });
 });
 
-app.get("/profile", verifyToken, (req, res) => {
+app.post("/profile", verifyToken, (req, res) => {
     console.log('Response from Spirit Meaning ');
     var authHeader = req.headers['authorization']
     const token = authHeader && authHeader.split(' ')[1];
