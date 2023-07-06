@@ -1,21 +1,11 @@
-const axios = require('axios');
+
 const express = require('express');
 const app = express();
 const path = require('path');
 const port=process.env.port||3100;
 app.use(require('body-parser').json());
 
-async function postData() {
-    try {
-      const response = await axios.post('https://spiritmeaning.cyclic.app/from', {
-        message: 'Hello, World!'
-      });
-  
-      console.log(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  }
+
   
 
 
@@ -124,7 +114,7 @@ function verifyToken(req, res, next) {
         res.status(403).json({ result: 'Token is Invalid' });
     }
 }
-postData();
+
 app.listen(3100, () => {
     console.log('Response from Spirit Meaning ' );
     console.log("App is running on port: 3100");
