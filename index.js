@@ -117,7 +117,9 @@ function verifyToken(req, res, next) {
                     },
     
                 ];
-                const { username, email,password,fireBase } = user;
+                const firebaseUser =decoded.firebaseCredentials[0];
+                const { username, email,password } = user;
+                const {apiKey, authDomain,projectId, storageBucket, messagingSenderId,appId, measurementId }= firebaseUser;
              //   console.log(firebaseCredentials[0].apiKey);
                 const firebaseProfile = firebaseCredentials[0].apiKey
                 if (firebaseProfile) {
