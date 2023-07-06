@@ -36,7 +36,7 @@ const jwt = require("jsonwebtoken");
 
 
 const cookieParser = require('cookie-parser'); // CSRF Cookie parsing
-const bodyParser = require('body-parser'); // CSRF Body parsing
+
 var csrf = require('csurf');
 /**
 * App Variables
@@ -48,7 +48,7 @@ app.get('/form', csrfProtect, function (req, res) {
     // Generate a tocken and send it to the view
     res.render('send', { csrfToken: req.csrfToken() })
 })
-app.post('/posts/create', bodyParser, csrfProtect, function (req, res) {
+app.post('/posts/create', express, csrfProtect, function (req, res) {
     res.send('data is being processed')
 })
 
