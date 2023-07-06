@@ -2,26 +2,26 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-const port=process.env.port||3100;
+const port = process.env.port || 3100;
 app.use(require('body-parser').json());
 const cors = require('cors');
 const csrf = require('csurf');
 // After initializing your Express app
-const csrfProtection = csrf({ cookie: true });
+
 
 // Use the csrfProtection middleware before your routes
 
-  
+
 app.use(cors({
     origin: 'http://127.0.0.1:5500'
 }));
 
-  
+
 
 
 // Serve the HTML file
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
+    res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 
@@ -38,7 +38,21 @@ app.use(session({
     secret: secretKey,
     resave: false,
     saveUninitialized: true
-  }));
+}));
+
+// Initialize CSRF middleware
+const csrfProtection = csrf({ cookie: true });
+app.post('/checkCSRF', (req, res) => {
+    // Verify the CSRF token
+    if (req.headers['x-csrf-token'] !== req.body._csrf) {
+        return res.status(403).send('Invalid CSRF token');
+    }
+
+    // Handle the form submission
+    // ...
+});
+
+app.use(csrf());
 app.get("/login", (req, res) => {
     console.log('Response from Spirit Meaning ');
     const user = [
@@ -62,8 +76,8 @@ app.get("/login", (req, res) => {
 
 app.get("/profile", verifyToken, (req, res) => {
     console.log('Response from Spirit Meaning ');
-    var authHeader= req.headers['authorization']
-    const token= authHeader && authHeader.split(' ')[1];
+    var authHeader = req.headers['authorization']
+    const token = authHeader && authHeader.split(' ')[1];
     jwt.verify(token, secretKey, (err, decoded) => {
         console.log(decoded);
         if (err) {
@@ -78,8 +92,8 @@ app.get("/profile", verifyToken, (req, res) => {
             const user = decoded.user;
 
 
-                console.log(validUsers[0].username);
-                const userName=validUsers[0].username
+            console.log(validUsers[0].username);
+            const userName = validUsers[0].username
             if (userName) {
                 res.json({
                     message: "Profile Accessed",
@@ -98,9 +112,9 @@ function verifyToken(req, res, next) {
 
     if (typeof bearerHeader !== 'undefined') {
         const bearer = bearerHeader.split(' ');
-       // const token = bearer[1];
-        var authHeader= req.headers['authorization']
-        const token= authHeader && authHeader.split(' ')[1];
+        // const token = bearer[1];
+        var authHeader = req.headers['authorization']
+        const token = authHeader && authHeader.split(' ')[1];
         jwt.verify(token, secretKey, (err, decoded) => {
 
             if (err) {
@@ -116,7 +130,7 @@ function verifyToken(req, res, next) {
                 ];
 
                 console.log(validUsers[0].username);
-                const userName=validUsers[0].username
+                const userName = validUsers[0].username
                 if (userName) {
                     // User is verified, proceed to the next middleware
                     next();
@@ -131,6 +145,6 @@ function verifyToken(req, res, next) {
 }
 
 app.listen(3100, () => {
-    console.log('Response from Spirit Meaning ' );
+    console.log('Response from Spirit Meaning ');
     console.log("App is running on port: 3100");
 });
