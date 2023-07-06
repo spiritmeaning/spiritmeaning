@@ -33,7 +33,7 @@ const jwt = require("jsonwebtoken");
 // app.use(cors());
 const secretKey = "secretkey";
 
-app.use(csrfProtection);
+
 app.use(session({
     secret: secretKey,
     resave: false,
