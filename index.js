@@ -3,6 +3,7 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const port = process.env.port || 3100;
+const session = require('express-session');
 app.use(require('body-parser').json());
 const cors = require('cors');
 const csrf = require('csurf');
