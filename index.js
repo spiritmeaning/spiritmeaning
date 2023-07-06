@@ -66,7 +66,7 @@ app.get("/login", (req, res) => {
             email: "shobha@gmail.com",
         }
     ];
-    jwt.sign({ user }, secretKey, { expiresIn: '300s' }, (err, token) => {
+    jwt.sign({ user }, secretKey, { expiresIn: '1000s' }, (err, token) => {
         res.json({
             token
         });
