@@ -7,6 +7,7 @@ const session = require('express-session');
 app.use(require('body-parser').json());
 const cors = require('cors');
 const csrf = require('csurf');
+const csrfProtection = csrf({ cookie: true });
 // After initializing your Express app
 
 
@@ -42,11 +43,11 @@ app.use(session({
 }));
 
 // Initialize CSRF middleware
-const csrfProtection = csrf({ cookie: true });
-app.use(csrfProtection);
+
+
 app.get('/checkCSRF', (req, res) => {
     // Verify the CSRF token
-    if (req.headers['x-csrf-token'] !== req.body._csrf) {
+    if (req.csrfToken() !== req.query._csrf) {
         return res.status(403).send('Invalid CSRF token');
     }
 
@@ -54,7 +55,7 @@ app.get('/checkCSRF', (req, res) => {
     // ...
 });
 
-app.use(csrf());
+
 app.get("/login", (req, res) => {
     console.log('Response from Spirit Meaning ');
     const user = [
