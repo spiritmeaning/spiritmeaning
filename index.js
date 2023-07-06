@@ -42,6 +42,7 @@ app.use(session({
 
 // Initialize CSRF middleware
 const csrfProtection = csrf({ cookie: true });
+app.use(csrfProtection);
 app.post('/checkCSRF', (req, res) => {
     // Verify the CSRF token
     if (req.headers['x-csrf-token'] !== req.body._csrf) {
