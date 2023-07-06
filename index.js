@@ -27,6 +27,7 @@ app.get('/', (req, res) => {
 const jwt = require("jsonwebtoken");
 
 // Initialize CSRF middleware
+
 app.get("/login", (req, res) => {
     console.log('Response from Spirit Meaning ');
     const user = [
