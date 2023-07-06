@@ -4,7 +4,10 @@ const app = express();
 const path = require('path');
 const port=process.env.port||3100;
 app.use(require('body-parser').json());
-
+const cors = require('cors');
+app.use(cors({
+    origin: 'http://localhost:5500'
+}));
 
   
 
