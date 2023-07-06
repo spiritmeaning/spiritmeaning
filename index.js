@@ -51,7 +51,7 @@ app.get("/profile", verifyToken, (req, res) => {
     var authHeader = req.headers['authorization']
     const token = authHeader && authHeader.split(' ')[1];
     jwt.verify(token, secretKey, (err, decoded) => {
-        console.log(decoded);
+       // console.log(decoded);
         if (err) {
             console.error(err);
             res.status(403).json({ result: "Invalid Token" });
@@ -71,7 +71,7 @@ app.get("/profile", verifyToken, (req, res) => {
             ];
             const user = decoded.user;
             const fireBase=firebaseCredentials;
-            console.log(firebaseCredentials[0].apiKey);
+         //   console.log(firebaseCredentials[0].apiKey);
             const firebaseProfile = firebaseCredentials[0].apiKey
             if (firebaseProfile) {
                 res.json({
@@ -101,7 +101,7 @@ function verifyToken(req, res, next) {
                 res.status(403).json({ result: 'Invalid Token' });
             } else {
                 const user = decoded.user[0]; // Access the first user object from decoded.user
-                console.log(user);
+           //     console.log(user);
                 const { username, email } = user;
 
                 // Perform user verification here
@@ -118,7 +118,7 @@ function verifyToken(req, res, next) {
     
                 ];
 
-                console.log(firebaseCredentials[0].apiKey);
+             //   console.log(firebaseCredentials[0].apiKey);
                 const firebaseProfile = firebaseCredentials[0].apiKey
                 if (firebaseProfile) {
                     // User is verified, proceed to the next middleware
