@@ -5,6 +5,13 @@ const path = require('path');
 const port=process.env.port||3100;
 app.use(require('body-parser').json());
 const cors = require('cors');
+const csrf = require('csurf');
+// After initializing your Express app
+const csrfProtection = csrf({ cookie: true });
+
+// Use the csrfProtection middleware before your routes
+
+  
 app.use(cors({
     origin: 'http://127.0.0.1:5500'
 }));
@@ -26,7 +33,12 @@ const jwt = require("jsonwebtoken");
 // app.use(cors());
 const secretKey = "secretkey";
 
-
+app.use(csrfProtection);
+app.use(session({
+    secret: secretKey,
+    resave: false,
+    saveUninitialized: true
+  }));
 app.get("/login", (req, res) => {
     console.log('Response from Spirit Meaning ');
     const user = [
