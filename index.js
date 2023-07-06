@@ -45,12 +45,12 @@ app.use(session({
 // Initialize CSRF middleware
 
 
-app.get('/checkCSRF', (req, res) => {
+app.post('/checkCSRF', (req, res) => {
     // Verify the CSRF token
     if (req.csrfToken() !== req.query._csrf) {
         return res.status(403).send('Invalid CSRF token');
     }
-
+    return res.status(200).send('Valid CSRF token');
     // Handle the form submission
     // ...
 });
