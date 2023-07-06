@@ -22,7 +22,7 @@ app.use(cors({
 
 
 // Serve the HTML file
-app.post('/', (req, res) => {
+app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
@@ -59,7 +59,7 @@ app.post('/checkCSRF', (req, res) => {
 });
 
 
-app.post("/login", (req, res) => {
+app.get("/login", (req, res) => {
     console.log('Response from Spirit Meaning ');
     const user = [
         {
@@ -80,7 +80,7 @@ app.post("/login", (req, res) => {
     });
 });
 
-app.post("/profile", verifyToken, (req, res) => {
+app.get("/profile", verifyToken, (req, res) => {
     console.log('Response from Spirit Meaning ');
     var authHeader = req.headers['authorization']
     const token = authHeader && authHeader.split(' ')[1];
