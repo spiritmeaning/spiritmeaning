@@ -33,7 +33,7 @@ const jwt = require("jsonwebtoken");
 
 // Initialize CSRF middleware
 
-app.use(cookieParser());
+
 app.use(
   session({
     secret: secretKey,
