@@ -2,12 +2,6 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const port = process.env.PORT || 3100;
-const session = require('express-session');
-
-
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 const cors = require('cors');
 app.use(cors({
     origin: 'http://127.0.0.1:5500'
@@ -33,25 +27,6 @@ app.get('/', (req, res) => {
 const jwt = require("jsonwebtoken");
 
 // Initialize CSRF middleware
-
-
-const cookieParser = require('cookie-parser'); // CSRF Cookie parsing
-
-var csrf = require('csurf');
-/**
-* App Variables
-*/
-
-// Middlewares
-var csrfProtect = csrf({ cookie: true })
-app.get('/form', csrfProtect, function (req, res) {
-    // Generate a tocken and send it to the view
-    res.render('send', { csrfToken: req.csrfToken() })
-})
-app.post('/posts/create', express, csrfProtect, function (req, res) {
-    res.send('data is being processed')
-})
-
 app.get("/login", (req, res) => {
     console.log('Response from Spirit Meaning ');
     const user = [
