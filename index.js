@@ -7,7 +7,10 @@ const csrf = require('csurf');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
+const cors = require('cors');
+app.use(cors({
+    origin: 'http://localhost:3100'
+}));
 // Set up session middleware
 app.use(session({
     secret: 'secretkey',
