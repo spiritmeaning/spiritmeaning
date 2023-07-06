@@ -3,7 +3,7 @@ const app = express();
 const path = require('path');
 const port = process.env.PORT || 3100;
 const session = require('express-session');
-const csrf = require('csurf');
+const csurf = require('csurf');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -11,11 +11,7 @@ const cors = require('cors');
 
 // Set up session middleware
 const secretKey = "secretkey";
-app.use(session({
-    secret: secretKey,
-    resave: false,
-    saveUninitialized: true
-}));
+
 
 
 // Use the csrfProtection middleware before your routes
@@ -35,30 +31,17 @@ app.get('/', (req, res) => {
 
 const jwt = require("jsonwebtoken");
 
-
-
-// const cors = require('cors'); 
-// app.use(cors());
-
-
-
-
 // Initialize CSRF middleware
 
-var csrfProtection = csrf({ cookie: true });
-
-app.get('/checkCSRF', csrfProtection,(req, res) => {
-    // Verify the CSRF token
-    if (req.csrfToken() !== req.body._csrf) {
-        return res.status(403).send('Invalid CSRF token');
-    }
-
-    // Handle the form submission
-    // ...
-
-    // Send a response
-    res.status(200).send('Valid CSRF token');
-});
+app.use(cookieParser());
+app.use(
+  session({
+    secret: secretKey,
+    resave: false,
+    saveUninitialized: false,
+  }),
+);
+app.use(csurf());
 
 app.get("/login", (req, res) => {
     console.log('Response from Spirit Meaning ');
