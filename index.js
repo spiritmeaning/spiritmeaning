@@ -77,7 +77,7 @@ app.get("/profile", verifyToken, (req, res) => {
                 res.json({
                     message: "Firebase Profile Accessed",
                     authData: user,
-                    firebaseCredentials:fireBase
+                    fireBase:firebaseCredentials
                 });
             } else {
                 res.status(403).json({ result: "Invalid User" });
@@ -117,9 +117,9 @@ function verifyToken(req, res, next) {
                     },
     
                 ];
-                const firebaseUser =decoded.firebaseCredentials[0];
+             
                 const { username, email,password } = user;
-                const {apiKey, authDomain,projectId, storageBucket, messagingSenderId,appId, measurementId }= firebaseUser;
+                const {apiKey, authDomain,projectId, storageBucket, messagingSenderId,appId, measurementId }= firebaseCredentials;
              //   console.log(firebaseCredentials[0].apiKey);
                 const firebaseProfile = firebaseCredentials[0].apiKey
                 if (firebaseProfile) {
