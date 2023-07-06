@@ -6,7 +6,7 @@ const port=process.env.port||3100;
 app.use(require('body-parser').json());
 const cors = require('cors');
 app.use(cors({
-    origin: 'http://127.0.0.1:5500/:5500'
+    origin: 'http://127.0.0.1:5500'
 }));
 
   
