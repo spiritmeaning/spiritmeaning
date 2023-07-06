@@ -48,7 +48,7 @@ app.get('/form', csrfProtect, function (req, res) {
     // Generate a tocken and send it to the view
     res.render('send', { csrfToken: req.csrfToken() })
 })
-app.post('/posts/create', parseForm, csrfProtect, function (req, res) {
+app.post('/posts/create', bodyParser, csrfProtect, function (req, res) {
     res.send('data is being processed')
 })
 
