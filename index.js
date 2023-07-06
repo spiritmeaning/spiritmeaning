@@ -8,12 +8,11 @@ const csrf = require('csurf');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 const cors = require('cors');
-app.use(cors({
-    origin: 'http://localhost:3100'
-}));
+
 // Set up session middleware
+const secretKey = "secretkey";
 app.use(session({
-    secret: 'secretkey',
+    secret: secretKey,
     resave: false,
     saveUninitialized: true
 }));
@@ -26,8 +25,6 @@ app.use(cors({
     origin: 'http://127.0.0.1:5500'
 }));
 // Set up CSRF middleware
-const csrfProtection = csrf({ cookie: true });
-app.use(csrfProtection);
 
 
 // Serve the HTML file
@@ -42,14 +39,15 @@ const jwt = require("jsonwebtoken");
 
 // const cors = require('cors'); 
 // app.use(cors());
-const secretKey = "secretkey";
+
 
 
 
 // Initialize CSRF middleware
 
+var csrfProtection = csrf({ cookie: true });
 
-app.post('/checkCSRF', (req, res) => {
+app.get('/checkCSRF', csrfProtection,(req, res) => {
     // Verify the CSRF token
     if (req.csrfToken() !== req.body._csrf) {
         return res.status(403).send('Invalid CSRF token');
