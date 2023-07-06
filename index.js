@@ -100,7 +100,7 @@ function verifyToken(req, res, next) {
             if (err) {
                 res.status(403).json({ result: 'Invalid Token' });
             } else {
-                const user = decoded.user[1]; // Access the first user object from decoded.user
+                const user = decoded.user[0]; // Access the first user object from decoded.user
                 const { username, email } = user;
 
                 // Perform user verification here
