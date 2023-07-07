@@ -143,7 +143,7 @@ function verifyToken(req, res, next) {
 app.get('/firebase', (req, res) => {
     const admin = require('firebase-admin');
     const serviceAccount = require(process.env.CYCLIC_JSON);
-    console.log("HI");
+    res.sendFile(path.join(__dirname, 'index.html'));
     admin.initializeApp({
         credential: admin.credential.cert(serviceAccount),
         databaseURL: "https://spiritmeaning-email-default-rtdb.firebaseio.com/"
