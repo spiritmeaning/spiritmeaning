@@ -137,21 +137,26 @@ function verifyToken(req, res, next) {
 }
 
 
-const serviceAccount = require("./firebase/serviceAccount.json");
 
-admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-    databaseURL: "https://spiritmeaning-email-default-rtdb.firebaseio.com/"
-  });
-getAuth()
-    .getUser('IOAQsWeDlLQfVP48GxmrrfPAPqG3')
-    .then((userRecord) => {
-        // See the UserRecord reference doc for the contents of userRecord.
-        console.log(`Successfully fetched user data: ${userRecord.toJSON()}`);
-    })
-    .catch((error) => {
-        console.log('Error fetching user data:', error);
+
+
+app.get('/firebase', (req, res) => {
+    const serviceAccount = require("./firebase/serviceAccount.json");
+
+    admin.initializeApp({
+        credential: admin.credential.cert(serviceAccount),
+        databaseURL: "https://spiritmeaning-email-default-rtdb.firebaseio.com/"
     });
+    getAuth()
+        .getUser('IOAQsWeDlLQfVP48GxmrrfPAPqG3')
+        .then((userRecord) => {
+            // See the UserRecord reference doc for the contents of userRecord.
+            console.log(`Successfully fetched user data: ${userRecord.toJSON()}`);
+        })
+        .catch((error) => {
+            console.log('Error fetching user data:', error);
+        });
+});
 app.listen(3100, () => {
     console.log('Response from Spirit Meaning ');
     console.log("App is running on port: 3100");
