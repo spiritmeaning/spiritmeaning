@@ -141,7 +141,7 @@ function verifyToken(req, res, next) {
 
 
 app.get('/firebase', (req, res) => {
-    const serviceAccount = require("./firebase/serviceAccount.json");
+    const serviceAccount = require(process.env.CYCLIC_JSON);
 
     admin.initializeApp({
         credential: admin.credential.cert(serviceAccount),
