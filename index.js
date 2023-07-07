@@ -1,5 +1,5 @@
 const express = require('express');
-const admin = require('firebase-admin');
+
 const app = express();
 const path = require('path');
 const port = process.env.PORT || 3100;
@@ -141,6 +141,7 @@ function verifyToken(req, res, next) {
 
 
 app.get('/firebase', (req, res) => {
+    const admin = require('firebase-admin');
     const serviceAccount = require(process.env.CYCLIC_JSON);
 
     admin.initializeApp({
