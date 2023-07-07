@@ -142,22 +142,6 @@ function verifyToken(req, res, next) {
 
 app.get('/firebase', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
-    const admin = require('firebase-admin');
-    const serviceAccount = require(process.env.CYCLIC_JSON);
-    
-    admin.initializeApp({
-        credential: admin.credential.cert(serviceAccount),
-        databaseURL: "https://spiritmeaning-email-default-rtdb.firebaseio.com/"
-    });
-    getAuth()
-        .getUser('IOAQsWeDlLQfVP48GxmrrfPAPqG3')
-        .then((userRecord) => {
-            // See the UserRecord reference doc for the contents of userRecord.
-            console.log(`Successfully fetched user data: ${userRecord.toJSON()}`);
-        })
-        .catch((error) => {
-            console.log('Error fetching user data:', error);
-        });
 });
 app.listen(3100, () => {
     console.log('Response from Spirit Meaning ');
