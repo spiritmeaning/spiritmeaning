@@ -17,7 +17,7 @@ const secretKey = "secretkey";
 
 
 // Set up CSRF middleware
-app.get('/firebase1', (req, res) => {
+app.get('/fire', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
