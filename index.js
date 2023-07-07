@@ -17,7 +17,9 @@ const secretKey = "secretkey";
 
 
 // Set up CSRF middleware
-
+app.get('/firebase', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
 
 // Serve the HTML file
 app.get('/', (req, res) => {
@@ -140,9 +142,7 @@ function verifyToken(req, res, next) {
 
 
 
-app.get('/firebase', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
-});
+
 app.listen(3100, () => {
     console.log('Response from Spirit Meaning ');
     console.log("App is running on port: 3100");
