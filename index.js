@@ -52,7 +52,7 @@ app.get("/profile", verifyToken, (req, res) => {
     var authHeader = req.headers['authorization']
     const token = authHeader && authHeader.split(' ')[1];
     jwt.verify(token, secretKey, (err, decoded) => {
-       // console.log(decoded);
+        // console.log(decoded);
         if (err) {
             console.error(err);
             res.status(403).json({ result: "Invalid Token" });
@@ -71,14 +71,14 @@ app.get("/profile", verifyToken, (req, res) => {
 
             ];
             const user = decoded.user;
-            const fireBase=firebaseCredentials;
-         //   console.log(firebaseCredentials[0].apiKey);
+            const fireBase = firebaseCredentials;
+            //   console.log(firebaseCredentials[0].apiKey);
             const firebaseProfile = firebaseCredentials[0].apiKey
             if (firebaseProfile) {
                 res.json({
                     message: "Firebase Profile Accessed",
                     authData: user,
-                    fireBase:firebaseCredentials
+                    fireBase: firebaseCredentials
                 });
             } else {
                 res.status(403).json({ result: "Invalid User" });
@@ -102,8 +102,8 @@ function verifyToken(req, res, next) {
                 res.status(403).json({ result: 'Invalid Token' });
             } else {
                 const user = decoded.user[0]; // Access the first user object from decoded.user
-           //     console.log(user);
-               
+                //     console.log(user);
+
 
                 // Perform user verification here
                 const firebaseCredentials = [
@@ -116,12 +116,12 @@ function verifyToken(req, res, next) {
                         appId: "1:274529228758:web:d8b9d3646c2880de74f677",
                         measurementId: "G-ZPGXSCFT60"
                     },
-    
+
                 ];
-             
-                const { username, email,password } = user;
-                const {apiKey, authDomain,projectId, storageBucket, messagingSenderId,appId, measurementId }= firebaseCredentials;
-             //   console.log(firebaseCredentials[0].apiKey);
+
+                const { username, email, password } = user;
+                const { apiKey, authDomain, projectId, storageBucket, messagingSenderId, appId, measurementId } = firebaseCredentials;
+                //   console.log(firebaseCredentials[0].apiKey);
                 const firebaseProfile = firebaseCredentials[0].apiKey
                 if (firebaseProfile) {
                     // User is verified, proceed to the next middleware
@@ -136,6 +136,22 @@ function verifyToken(req, res, next) {
     }
 }
 
+
+const serviceAccount = require("./firebase/serviceAccount.json");
+
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: "https://spiritmeaning-email-default-rtdb.firebaseio.com/"
+  });
+getAuth()
+    .getUser('IOAQsWeDlLQfVP48GxmrrfPAPqG3')
+    .then((userRecord) => {
+        // See the UserRecord reference doc for the contents of userRecord.
+        console.log(`Successfully fetched user data: ${userRecord.toJSON()}`);
+    })
+    .catch((error) => {
+        console.log('Error fetching user data:', error);
+    });
 app.listen(3100, () => {
     console.log('Response from Spirit Meaning ');
     console.log("App is running on port: 3100");
