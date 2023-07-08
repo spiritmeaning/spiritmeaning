@@ -5,7 +5,7 @@ const path = require('path');
 const port = process.env.PORT || 3100;
 const cors = require('cors');
 app.use(cors({
-    origin: 'https://spiritmeaning-email.web.app'
+    origin: 'http://localhost:5500'
 }));
 // Set up session middleware
 const secretKey = "secretkey";
