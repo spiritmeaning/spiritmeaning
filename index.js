@@ -272,6 +272,7 @@ app.get('/firebaseSetData', (req, res) => {
 
     // Run the main function
     main();
+    res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 
