@@ -139,139 +139,139 @@ function verifyToken(req, res, next) {
 
 
 app.get('/old', (req, res) => {
-    const fs = require('fs');
-    const crypto = require('crypto');
-    require('dotenv').config();
+    // const fs = require('fs');
+    // const crypto = require('crypto');
+    // require('dotenv').config();
 
-    // Function to read the navbar/menus database
-    async function readNavbarMenusDatabase() {
-        try {
-            const admin = require('firebase-admin');
-            var source = `{
-          "rules": {
-            "quizzes": {
-              ".read": "true",
-              ".write": "true"
-            },
-            "users": {
-              ".read": "true",
-              ".write": "true",
-              ".indexOn": ["email"] // Add this line to create an index on the 'email' field
-            },
-            "otherData": {
-              ".read": "true",
-              ".write": "true"
-            },
-            "navbar": {
-              "menus": {
-                ".read": "true",
-                ".write": "true"
-              }
-            },
-            "quizAnswers": {
-              ".read": "true",
-              ".write": "true"
-            }
-          }
-        }`;
-            await admin.database().setRules(source);
-            const snapshot = await admin.database().ref('navbar/menus').once('value');
-            const data = snapshot.val();
-            console.log('Navbar/menus database:', data);
-            source = `{
-          "rules": {
-            "quizzes": {
-              ".read": "false",
-              ".write": "false"
-            },
-            "users": {
-              ".read": "false",
-              ".write": "false",
-              ".indexOn": ["email"] // Add this line to create an index on the 'email' field
-            },
-            "otherData": {
-              ".read": "false",
-              ".write": "false"
-            },
-            "navbar": {
-              "menus": {
-                ".read": "false",
-                ".write": "false"
-              }
-            },
-            "quizAnswers": {
-              ".read": "false",
-              ".write": "false"
-            }
-          }
-        }`;
-            await admin.database().setRules(source);;
-            console.log('Read/write access disabled.');
-        } catch (error) {
-            console.error('Error reading navbar/menus database:', error);
-        }
-    }
+    // // Function to read the navbar/menus database
+    // async function readNavbarMenusDatabase() {
+    //     try {
+    //         const admin = require('firebase-admin');
+    //         var source = `{
+    //       "rules": {
+    //         "quizzes": {
+    //           ".read": "true",
+    //           ".write": "true"
+    //         },
+    //         "users": {
+    //           ".read": "true",
+    //           ".write": "true",
+    //           ".indexOn": ["email"] // Add this line to create an index on the 'email' field
+    //         },
+    //         "otherData": {
+    //           ".read": "true",
+    //           ".write": "true"
+    //         },
+    //         "navbar": {
+    //           "menus": {
+    //             ".read": "true",
+    //             ".write": "true"
+    //           }
+    //         },
+    //         "quizAnswers": {
+    //           ".read": "true",
+    //           ".write": "true"
+    //         }
+    //       }
+    //     }`;
+    //         await admin.database().setRules(source);
+    //         const snapshot = await admin.database().ref('navbar/menus').once('value');
+    //         const data = snapshot.val();
+    //         console.log('Navbar/menus database:', data);
+    //         source = `{
+    //       "rules": {
+    //         "quizzes": {
+    //           ".read": "false",
+    //           ".write": "false"
+    //         },
+    //         "users": {
+    //           ".read": "false",
+    //           ".write": "false",
+    //           ".indexOn": ["email"] // Add this line to create an index on the 'email' field
+    //         },
+    //         "otherData": {
+    //           ".read": "false",
+    //           ".write": "false"
+    //         },
+    //         "navbar": {
+    //           "menus": {
+    //             ".read": "false",
+    //             ".write": "false"
+    //           }
+    //         },
+    //         "quizAnswers": {
+    //           ".read": "false",
+    //           ".write": "false"
+    //         }
+    //       }
+    //     }`;
+    //         await admin.database().setRules(source);;
+    //         console.log('Read/write access disabled.');
+    //     } catch (error) {
+    //         console.error('Error reading navbar/menus database:', error);
+    //     }
+    // }
 
-    // Function to decrypt the encrypted service account JSON file
-    async function decryptServiceAccount(encryptionKey, iv) {
-        try {
-            const encryptedData = fs.readFileSync('./myFirebase/encryptedData.bin');
-            const decipher = crypto.createDecipheriv('aes-256-cbc', encryptionKey, iv);
-            const decryptedData = Buffer.concat([
-                decipher.update(encryptedData),
-                decipher.final()
-            ]);
-            fs.writeFileSync('./myFirebase/serviceAccountKey.json', decryptedData);
-            console.log('Decryption complete.');
+    // // Function to decrypt the encrypted service account JSON file
+    // async function decryptServiceAccount(encryptionKey, iv) {
+    //     try {
+    //         const encryptedData = fs.readFileSync('./myFirebase/encryptedData.bin');
+    //         const decipher = crypto.createDecipheriv('aes-256-cbc', encryptionKey, iv);
+    //         const decryptedData = Buffer.concat([
+    //             decipher.update(encryptedData),
+    //             decipher.final()
+    //         ]);
+    //         fs.writeFileSync('./myFirebase/serviceAccountKey.json', decryptedData);
+    //         console.log('Decryption complete.');
 
-            // Initialize Firebase Admin SDK with service account credentials
-            const admin = require('firebase-admin');
-            const serviceAccount = require('./myFirebase/serviceAccountKey.json');
-            admin.initializeApp({
-                credential: admin.credential.cert(serviceAccount),
-                databaseURL: 'https://spiritmeaning-email-default-rtdb.firebaseio.com/'
-            });
-        } catch (error) {
-            console.error('Error decrypting the service account JSON file:', error);
-        }
-    }
+    //         // Initialize Firebase Admin SDK with service account credentials
+    //         const admin = require('firebase-admin');
+    //         const serviceAccount = require('./myFirebase/serviceAccountKey.json');
+    //         admin.initializeApp({
+    //             credential: admin.credential.cert(serviceAccount),
+    //             databaseURL: 'https://spiritmeaning-email-default-rtdb.firebaseio.com/'
+    //         });
+    //     } catch (error) {
+    //         console.error('Error decrypting the service account JSON file:', error);
+    //     }
+    // }
 
-    // Function to destroy the service account JSON file
-    function destroyServiceAccountFile() {
-        try {
-            fs.unlinkSync('./myFirebase/serviceAccountKey.json');
-            console.log('Service account JSON file destroyed.');
-        } catch (error) {
-            console.error('Error destroying the service account JSON file:', error);
-        }
-    }
+    // // Function to destroy the service account JSON file
+    // function destroyServiceAccountFile() {
+    //     try {
+    //         fs.unlinkSync('./myFirebase/serviceAccountKey.json');
+    //         console.log('Service account JSON file destroyed.');
+    //     } catch (error) {
+    //         console.error('Error destroying the service account JSON file:', error);
+    //     }
+    // }
 
-    // Main function
-    async function main() {
-        try {
-            // Read the encryption key and IV from the .env file
-            const encryptionKeyHex = process.env.ENCRYPTION_KEY;
-            const ivHex = process.env.IV;
+    // // Main function
+    // async function main() {
+    //     try {
+    //         // Read the encryption key and IV from the .env file
+    //         const encryptionKeyHex = process.env.ENCRYPTION_KEY;
+    //         const ivHex = process.env.IV;
 
-            // Convert the hexadecimal strings to buffers
-            const encryptionKey = Buffer.from(encryptionKeyHex, 'hex');
-            const iv = Buffer.from(ivHex, 'hex');
+    //         // Convert the hexadecimal strings to buffers
+    //         const encryptionKey = Buffer.from(encryptionKeyHex, 'hex');
+    //         const iv = Buffer.from(ivHex, 'hex');
 
-            // Decrypt the encrypted service account JSON file
-            await decryptServiceAccount(encryptionKey, iv);
+    //         // Decrypt the encrypted service account JSON file
+    //         await decryptServiceAccount(encryptionKey, iv);
 
-            // Read the navbar/menus database
-            await readNavbarMenusDatabase();
+    //         // Read the navbar/menus database
+    //         await readNavbarMenusDatabase();
 
-            // Destroy the service account JSON file
-          //  destroyServiceAccountFile();
-        } catch (error) {
-            console.error('An error occurred:', error);
-        }
-    }
+    //         // Destroy the service account JSON file
+    //       //  destroyServiceAccountFile();
+    //     } catch (error) {
+    //         console.error('An error occurred:', error);
+    //     }
+    // }
 
-    // Run the main function
-    main();
+    // // Run the main function
+    // main();
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
