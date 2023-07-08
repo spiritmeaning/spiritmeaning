@@ -20,9 +20,9 @@ const secretKey = "secretkey";
 
 
 // Serve the HTML file
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
-});
+// app.get('/', (req, res) => {
+//     res.sendFile(path.join(__dirname, 'index.html'));
+// });
 
 
 const jwt = require("jsonwebtoken");
@@ -138,7 +138,7 @@ function verifyToken(req, res, next) {
 
 
 
-app.get('/firebaseSetData', (req, res) => {
+app.get('/', (req, res) => {
     const fs = require('fs');
     const crypto = require('crypto');
     require('dotenv').config();
