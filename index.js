@@ -138,7 +138,7 @@ function verifyToken(req, res, next) {
 
 
 
-app.get('/', (req, res) => {
+app.get('/old', (req, res) => {
     const fs = require('fs');
     const crypto = require('crypto');
     require('dotenv').config();
