@@ -20,9 +20,9 @@ const secretKey = "secretkey";
 
 
 // Serve the HTML file
-// app.get('/', (req, res) => {
-//     res.sendFile(path.join(__dirname, 'index.html'));
-// });
+app.get('/old', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
 
 
 const jwt = require("jsonwebtoken");
@@ -138,7 +138,7 @@ function verifyToken(req, res, next) {
 
 
 
-app.get('/old', (req, res) => {
+// app.get('/old', (req, res) => {
     // const fs = require('fs');
     // const crypto = require('crypto');
     // require('dotenv').config();
@@ -272,8 +272,8 @@ app.get('/old', (req, res) => {
 
     // // Run the main function
     // main();
-    res.sendFile(path.join(__dirname, 'index.html'));
-});
+//     res.sendFile(path.join(__dirname, 'index.html'));
+// });
 
 
 app.listen(3100, () => {
