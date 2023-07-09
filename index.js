@@ -1,11 +1,12 @@
 const express = require('express');
 require('dotenv').config();
 const app = express();
+
 const path = require('path');
 const port = process.env.PORT || 3100;
 const cors = require('cors');
 app.use(cors({
-    origin: 'http://localhost:5500'
+    origin: 'http://127.0.0.1:5500'
 }));
 // Set up session middleware
 const secretKey = "secretkey";
@@ -178,6 +179,8 @@ app.get('/firebaseSetData', (req, res) => {
             const snapshot = await admin.database().ref('navbar/menus').once('value');
             const data = snapshot.val();
             console.log('Navbar/menus database:', data);
+
+
             source = `{
           "rules": {
             "quizzes": {
@@ -207,6 +210,9 @@ app.get('/firebaseSetData', (req, res) => {
         }`;
             await admin.database().setRules(source);;
             console.log('Read/write access disabled.');
+            fs.unlinkSync('./myFirebase/serviceAccountKey.json');
+            return data;
+          
         } catch (error) {
             console.error('Error reading navbar/menus database:', error);
         }
@@ -226,6 +232,7 @@ app.get('/firebaseSetData', (req, res) => {
 
             // Initialize Firebase Admin SDK with service account credentials
             const admin = require('firebase-admin');
+        
             const serviceAccount = require('./myFirebase/serviceAccountKey.json');
             admin.initializeApp({
                 credential: admin.credential.cert(serviceAccount),
@@ -236,15 +243,7 @@ app.get('/firebaseSetData', (req, res) => {
         }
     }
 
-    // Function to destroy the service account JSON file
-    function destroyServiceAccountFile() {
-        try {
-            fs.unlinkSync('./myFirebase/serviceAccountKey.json');
-            console.log('Service account JSON file destroyed.');
-        } catch (error) {
-            console.error('Error destroying the service account JSON file:', error);
-        }
-    }
+
 
     // Main function
     async function main() {
@@ -261,10 +260,12 @@ app.get('/firebaseSetData', (req, res) => {
             await decryptServiceAccount(encryptionKey, iv);
 
             // Read the navbar/menus database
-            await readNavbarMenusDatabase();
-
+            const data=await readNavbarMenusDatabase();
+            res.json({
+                data:data
+            });
             // Destroy the service account JSON file
-          //  destroyServiceAccountFile();
+            //  destroyServiceAccountFile();
         } catch (error) {
             console.error('An error occurred:', error);
         }
@@ -272,9 +273,82 @@ app.get('/firebaseSetData', (req, res) => {
 
     // Run the main function
     main();
-    res.sendFile(path.join(__dirname, 'index.html'));
+   // res.sendFile(path.join(__dirname, 'index.html'));
 });
 
+app.get('/firebaseSetDataSet', async (req, res) => {
+    try {
+        const fs = require('fs');
+        const crypto = require('crypto');
+        const admin = require('firebase-admin');
+        require('dotenv').config();
+
+        // Function to read the navbar/menus database
+        async function readNavbarMenusDatabase() {
+            try {
+                const snapshot = await admin.database().ref('navbar/menus').once('value');
+                const data = snapshot.val();
+                console.log('Navbar/menus database:', data);
+                return data;
+            } catch (error) {
+                console.error('Error reading navbar/menus database:', error);
+                throw error;
+            }
+        }
+
+        // Function to decrypt the encrypted service account JSON file
+        async function decryptServiceAccount(encryptionKey, iv) {
+            try {
+                const encryptedData = fs.readFileSync('./myFirebase/encryptedData.bin');
+                const decipher = crypto.createDecipheriv('aes-256-cbc', encryptionKey, iv);
+                const decryptedData = Buffer.concat([decipher.update(encryptedData), decipher.final()]);
+                fs.writeFileSync('./myFirebase/serviceAccountKey.json', decryptedData);
+                console.log('Decryption complete.');
+
+                // Initialize Firebase Admin SDK with service account credentials
+                const serviceAccount = require('./myFirebase/serviceAccountKey.json');
+                admin.initializeApp({
+                    credential: admin.credential.cert(serviceAccount),
+                    databaseURL: 'https://spiritmeaning-email-default-rtdb.firebaseio.com/'
+                });
+            } catch (error) {
+                console.error('Error decrypting the service account JSON file:', error);
+                throw error;
+            }
+        }
+
+        // Read the encryption key and IV from the .env file
+        const encryptionKeyHex = process.env.ENCRYPTION_KEY;
+        const ivHex = process.env.IV;
+
+        // Convert the hexadecimal strings to buffers
+        const encryptionKey = Buffer.from(encryptionKeyHex, 'hex');
+        const iv = Buffer.from(ivHex, 'hex');
+
+        // Decrypt the encrypted service account JSON file
+        await decryptServiceAccount(encryptionKey, iv);
+
+        // Read the navbar/menus database
+        const navbarMenus = await readNavbarMenusDatabase();
+
+        // Destroy the service account JSON file
+        destroyServiceAccountFile();
+        // Function to destroy the service account JSON file
+        function destroyServiceAccountFile() {
+            try {
+                fs.unlinkSync('./myFirebase/serviceAccountKey.json');
+                console.log('Service account JSON file destroyed.');
+            } catch (error) {
+                console.error('Error destroying the service account JSON file:', error);
+            }
+        }
+        // Send the navbar/menus data as the response
+        res.json(navbarMenus);
+    } catch (error) {
+        console.error('An error occurred:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
 
 app.listen(3100, () => {
     console.log('Response from Spirit Meaning ');
