@@ -3,10 +3,10 @@ require('dotenv').config();
 const app = express();
 
 const path = require('path');
-const port = process.env.PORT || 3100;
+const port = process.env.PORT || 49876;
 const cors = require('cors');
 app.use(cors({
-    origin: 'http://127.0.0.1:5500'
+    origin: 'http://spiritmeaning.org:4500'
 }));
 // Set up session middleware
 const secretKey = "secretkey";
@@ -350,7 +350,7 @@ app.get('/firebaseSetDataSet', async (req, res) => {
     }
 });
 
-app.listen(3100, () => {
+app.listen(49876, () => {
     console.log('Response from Spirit Meaning ');
-    console.log("App is running on port: 3100");
+    console.log("App is running on port: 49876");
 });
